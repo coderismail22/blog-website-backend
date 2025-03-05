@@ -19,6 +19,8 @@ export default {
   api_secret: process.env.API_SECRET,
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
   super_admin_email: process.env.SUPER_ADMIN_EMAIL,
+  admin_password: process.env.ADMIN_PASSWORD,
+  admin_email: process.env.ADMIN_EMAIL,
   email_host: process.env.EMAIL_HOST,
   email_port: process.env.EMAIL_PORT,
   email_address: process.env.EMAIL_USER_ADDRESS,

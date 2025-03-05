@@ -5,6 +5,7 @@ export type TAdmin = {
   email: string;
   phone: string;
   role: "superAdmin" | "admin";
+  isVerified?: boolean;
   status?: "in-progress" | "blocked";
   isDeleted?: boolean;
 };
