@@ -11,7 +11,12 @@ router.post(
   PostControllers.createPost,
 );
 
-router.get("/:slug", PostControllers.getPostById);
+router.get("/:slug", PostControllers.getPostBySlug);
+router.get(
+  "/get-all-category-post/:category",
+  PostControllers.getAllPostUnderCategory,
+);
+router.get("/:postId/similar", PostControllers.getSimilarPosts);
 router.get("/", PostControllers.getAllPosts);
 
 router.patch(

@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "https://fab-ads-demo.netlify.app",
+      "https://demo-blog-sw-2025.netlify.app",
       "http://localhost:5173",
       "http://localhost:5174",
     ],

@@ -1,12 +1,16 @@
 import { z } from "zod";
 import { STATUS } from "./user.constant";
 
-const userValidationSchema = z.object({
-  password: z
-    .string({
-      invalid_type_error: "Password must be string",
-    })
-    .max(20, { message: "Password can not be more than 20 characters" }),
+const createUserValidationSchema = z.object({
+  body: z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Email must be valid"),
+    password: z
+      .string({
+        invalid_type_error: "Password must be string",
+      })
+      .max(20, { message: "Password can not be more than 20 characters" }),
+  }),
 });
 
 const changeUserStatusValidationSchema = z.object({
@@ -31,7 +35,7 @@ const verifyOTPValidationSchema = z.object({
 });
 
 export const UserValidations = {
-  userValidationSchema,
+  createUserValidationSchema,
   changeUserStatusValidationSchema,
   resendOTPValidationSchema,
   verifyOTPValidationSchema,

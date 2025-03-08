@@ -14,7 +14,7 @@ const createPost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getPostById = catchAsync(async (req: Request, res: Response) => {
+const getPostBySlug = catchAsync(async (req: Request, res: Response) => {
   const { slug } = req.params;
   const result = await PostServices.getPostFromDB(slug);
   sendResponse(res, {
@@ -23,9 +23,30 @@ const getPostById = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllPostUnderCategory = catchAsync(
+  async (req: Request, res: Response) => {
+    const { category } = req.params;
+    const result = await PostServices.getAllPostUnderCategory(category);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      data: result,
+    });
+  },
+);
 
 const getAllPosts = catchAsync(async (req: Request, res: Response) => {
-  const result = await PostServices.getAllPostsFromDB();
+  const result =
+    await PostServices.getAllPostsFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    data: result,
+  });
+});
+
+const getSimilarPosts = catchAsync(async (req: Request, res: Response) => {
+  const result = await PostServices.getSimilarPostsFromDB(req.params.postId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -54,8 +75,10 @@ const deletePost = catchAsync(async (req: Request, res: Response) => {
 
 export const PostControllers = {
   createPost,
-  getPostById,
+  getPostBySlug,
+  getAllPostUnderCategory,
   getAllPosts,
+  getSimilarPosts,
   updatePost,
   deletePost,
 };

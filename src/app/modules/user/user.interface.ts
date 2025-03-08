@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { Model } from "mongoose";
 import { USER_ROLE } from "./user.constant";
 
 export interface IUser {
@@ -7,39 +5,14 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  needsPasswordChange: boolean;
-  passwordChangedAt?: Date;
-  role: "superAdmin" | "admin" | "student" | "faculty";
+  role: "superAdmin" | "admin" | "user";
   status: "in-progress" | "blocked";
-  // OTP
-  verificationCode: string | null;
-  otpExpiresAt: Date | null;
-  lastOtpSentAt: Date; // To handle resend delay
-  isVerified: boolean;
-
   isDeleted: boolean;
-}
-
-export interface UserModel extends Model<IUser> {
-  //Static method type declaration : function-name(parameter):return
-
-  // doesUserExistByCustomId
-  doesUserExistByCustomId(id: string): Promise<IUser>;
-
-  // doPasswordsMatch
-  doPasswordsMatch(
-    plaintextPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean>;
-
-  // isUserDeleted
-  isUserDeleted(id: string): Promise<boolean>;
-
-  // isJWTIssuedAtBeforeChangingPassword
-  isJWTIssuedAtBeforeChangingPassword(
-    jwtIssuedAtTimeStamp: number,
-    passwordChangedAtTimeStamp: Date,
-  ): boolean;
+  // OTP Related Fields
+  // verificationCode: string | null;
+  // otpExpiresAt: Date | null;
+  // lastOtpSentAt: Date; // To handle resend delay
+  // isVerified: boolean;
 }
 
 export type TUserRole = keyof typeof USER_ROLE;
