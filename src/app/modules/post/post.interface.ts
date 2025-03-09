@@ -6,7 +6,7 @@ export interface IPost {
   slug: string; //ok
   content: string; // ok
   author: Types.ObjectId; //ok
-  category: string; //ok
+  category: Types.ObjectId; //ok
   tags: string[]; //ok
   coverImage?: string; //ok
   isFeatured?: boolean; // ok
