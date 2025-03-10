@@ -30,7 +30,7 @@ const getPostFromDB = async (slug: string): Promise<IPost> => {
 const getAllPostsFromDB = async (): Promise<IPost[]> => {
   return await Post.find()
     .sort({ createdAt: -1 })
-    .populate("relatedPosts sidebarPosts category");
+    .populate("relatedPosts sidebarPosts category author");
 };
 
 const getAllPostUnderCategory = async (
