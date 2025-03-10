@@ -3,7 +3,6 @@ export type TAdmin = {
   password: string;
   profileImg?: string;
   email: string;
-  phone: string;
   role: "superAdmin" | "admin";
   isVerified?: boolean;
   status?: "in-progress" | "blocked";

@@ -30,11 +30,6 @@ const AdminSchema = new Schema<TAdmin>(
       trim: true,
       default: "",
     },
-    phone: {
-      type: String,
-      trim: true,
-      default: null,
-    },
     role: {
       type: String,
       enum: ["superAdmin", "admin"],

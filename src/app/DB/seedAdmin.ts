@@ -11,7 +11,6 @@ const adminData: TAdmin = {
   email: config.admin_email as string,
   password: config.admin_password as string,
   role: USER_ROLE.admin,
-  phone: "",
 };
 
 // For User Model
@@ -20,9 +19,7 @@ const adminUserData: TAdmin = {
   email: config.admin_email as string,
   password: config.admin_password as string,
   role: USER_ROLE.admin,
-  isVerified: true,
   status: "in-progress",
-  phone: "",
   isDeleted: false,
 };
 

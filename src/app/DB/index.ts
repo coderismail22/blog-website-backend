@@ -11,7 +11,6 @@ const superAdminData: TAdmin = {
   email: config.super_admin_email as string,
   password: config.super_admin_password as string,
   role: USER_ROLE.superAdmin,
-  phone: "",
 };
 
 // For User Model
@@ -22,7 +21,6 @@ const superAdminUserData: TAdmin = {
   role: USER_ROLE.superAdmin,
   isVerified: true,
   status: "in-progress",
-  phone: "",
   isDeleted: false,
 };
 
