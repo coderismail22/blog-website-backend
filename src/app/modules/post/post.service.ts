@@ -21,7 +21,7 @@ const createPostInDB = async (postData: IPost): Promise<IPost> => {
 const getPostFromDB = async (slug: string): Promise<IPost> => {
   const decodedSlug = decodeURIComponent(slug); // in case there are any blank spaces
   const result = await Post.findOne({ slug: decodedSlug }).populate(
-    "relatedPosts sidebarPosts category",
+    "relatedPosts sidebarPosts category author",
   );
   if (!result) throw new AppError(httpStatus.NOT_FOUND, "Post not found");
   return result;
@@ -49,7 +49,7 @@ const getAllPostUnderCategory = async (
     // ✅ Step 2: Query Posts with that Category ObjectId
     return await Post.find({ category: category._id })
       .sort({ createdAt: -1 })
-      .populate("relatedPosts sidebarPosts category"); // Populate the category field
+      .populate("relatedPosts sidebarPosts category author"); // Populate the category field
   } catch (error) {
     return [];
   }

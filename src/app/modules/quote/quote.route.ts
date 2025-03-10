@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   "/create-quote",
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   validateRequest(QuoteValidations.createQuoteValidationSchema),
   QuoteControllers.createQuote,
 );
@@ -19,11 +19,15 @@ router.get("/", QuoteControllers.getAllQuotes);
 
 router.patch(
   "/update-quote/:quoteId",
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   validateRequest(QuoteValidations.updateQuoteValidationSchema),
   QuoteControllers.updateQuote,
 );
 
-router.delete("/:quoteId", auth(USER_ROLE.admin), QuoteControllers.deleteQuote);
+router.delete(
+  "/:quoteId",
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  QuoteControllers.deleteQuote,
+);
 
 export const QuoteRoutes = router;
