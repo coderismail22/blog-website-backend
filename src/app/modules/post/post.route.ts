@@ -15,6 +15,7 @@ router.post(
 );
 
 router.get("/:slug", PostControllers.getPostBySlug);
+router.get("/search/query", PostControllers.getPostsByQuery);
 router.get(
   "/get-all-category-post/:category(*)",
   PostControllers.getAllPostUnderCategory,

@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { PostServices } from "./post.service";
+import AppError from "../../errors/AppError";
 
 const createPost = catchAsync(async (req: Request, res: Response) => {
   const result = await PostServices.createPostInDB(req.body);
@@ -23,6 +24,19 @@ const getPostBySlug = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const getPostsByQuery = catchAsync(async (req: Request, res: Response) => {
+  const query = req?.query.q as string;
+  if (!query) {
+    new AppError(httpStatus.BAD_REQUEST, "Please provide a search query");
+  }
+  const result = await PostServices.getPostsByQueryFromDB(query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    data: result,
+  });
+});
 const getAllPostUnderCategory = catchAsync(
   async (req: Request, res: Response) => {
     const { category } = req.params;
@@ -36,8 +50,7 @@ const getAllPostUnderCategory = catchAsync(
 );
 
 const getAllPosts = catchAsync(async (req: Request, res: Response) => {
-  const result =
-    await PostServices.getAllPostsFromDB();
+  const result = await PostServices.getAllPostsFromDB();
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -76,6 +89,7 @@ const deletePost = catchAsync(async (req: Request, res: Response) => {
 export const PostControllers = {
   createPost,
   getPostBySlug,
+  getPostsByQuery,
   getAllPostUnderCategory,
   getAllPosts,
   getSimilarPosts,

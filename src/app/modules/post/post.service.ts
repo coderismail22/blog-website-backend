@@ -4,18 +4,40 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import slugify from "slugify";
 import { Category } from "../category/category.model";
+import mongoose from "mongoose";
 
 const createPostInDB = async (postData: IPost): Promise<IPost> => {
-  const baseSlug = slugify(postData.title, { lower: true, strict: true });
-  let slug = baseSlug;
-  let count = 1;
-  // Check if slug exists and increment the number if needed
-  while (await Post.findOne({ slug })) {
-    slug = `${baseSlug}-${count}`;
-    count++;
+  const session = await mongoose.startSession(); // Start a new session for the transaction
+  session.startTransaction(); // Start the transaction
+
+  try {
+    const baseSlug = slugify(postData.title, { lower: true, strict: true });
+    let slug = baseSlug || "default-slug"; // Fallback to a default slug if the slugify fails
+    let count = 1;
+
+    // Check if slug exists and increment the number if needed
+    while (await Post.findOne({ slug }).session(session)) {
+      slug = `${baseSlug}-${count}`;
+      count++;
+    }
+
+    postData.slug = slug;
+
+    // Attempt to create the post inside the transaction
+    const createdPost = await Post.create([postData], { session });
+
+    // If everything works fine, commit the transaction
+    await session.commitTransaction();
+
+    return createdPost[0]; // Since create returns an array, we return the first element
+  } catch (error) {
+    // If any error occurs, abort the transaction
+    await session.abortTransaction();
+    throw error; // Re-throw the error after rollback
+  } finally {
+    // End the session
+    session.endSession();
   }
-  postData.slug = slug;
-  return await Post.create(postData);
 };
 
 const getPostFromDB = async (slug: string): Promise<IPost> => {
@@ -27,6 +49,15 @@ const getPostFromDB = async (slug: string): Promise<IPost> => {
   return result;
 };
 
+const getPostsByQueryFromDB = async (query: string) => {
+  const articles = await Post.find({
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { content: { $regex: query, $options: "i" } },
+    ],
+  });
+  return articles;
+};
 const getAllPostsFromDB = async (): Promise<IPost[]> => {
   return await Post.find()
     .sort({ createdAt: -1 })
@@ -96,6 +127,7 @@ export const PostServices = {
   createPostInDB,
   getPostFromDB,
   getAllPostsFromDB,
+  getPostsByQueryFromDB,
   getAllPostUnderCategory,
   getSimilarPostsFromDB,
   updatePostInDB,
