@@ -9,6 +9,15 @@ import { User } from "./user.model";
 import config from "../../config";
 import { createToken } from "../auth/auth.utils";
 
+const getAllUsers = async () => {
+  const users = await User.find();
+
+  if (!users) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Failed to find users.");
+  }
+
+  return users;
+};
 const createUserInDB = async (payload: Partial<IUser>) => {
   const finalUserData = {
     ...payload,
@@ -99,6 +108,7 @@ const changeStatusIntoDB = async (id: string, status: string) => {
 };
 
 export const UserServices = {
+  getAllUsers,
   createUserInDB,
   createAdminIntoDB,
   changeStatusIntoDB,
