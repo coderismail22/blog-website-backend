@@ -16,7 +16,7 @@ router.post(
 
 router.get("/:slug", PostControllers.getPostBySlug);
 router.get(
-  "/get-all-category-post/:category",
+  "/get-all-category-post/:category(*)",
   PostControllers.getAllPostUnderCategory,
 );
 router.get("/:postId/similar", PostControllers.getSimilarPosts);

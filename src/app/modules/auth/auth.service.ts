@@ -133,7 +133,7 @@ const changePassword = async (
   payload: { newPassword: string; oldPassword: string },
 ) => {
   // check: does the user exist
-  const user = await User.doesUserExistByCustomId(userData?.userId);
+  const user = await User.findById(userData?.userId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User does not exist.");
   }
@@ -151,10 +151,7 @@ const changePassword = async (
   }
 
   // check: doesPasswordMatch
-  const doesPasswordMatch = await User.doPasswordsMatch(
-    payload?.oldPassword,
-    user?.password,
-  );
+  const doesPasswordMatch = payload?.oldPassword === user?.password;
 
   if (!doesPasswordMatch) {
     throw new AppError(httpStatus.FORBIDDEN, "Passwords is incorrect.");
